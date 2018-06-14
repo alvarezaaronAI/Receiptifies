@@ -5,4 +5,5 @@
     <string name="title_activity_home">Receiptifies</string>
     <string name="camera_permission_denied">Camera Permission was denied.</string>
     <string name="camera_permission_approved">Camera Permission was approved.</string>
+    <string name="action_Button_Test">Action Test</string>
 </resources>
