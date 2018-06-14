@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-public class QR extends AppCompatActivity {
+public class QR extends AppCompatActivity{
     //Attributes to handle QR Scan.
     public final static int REQUEST_CAMERA = 1;
     public final String INFO_TAG = "STATE";
