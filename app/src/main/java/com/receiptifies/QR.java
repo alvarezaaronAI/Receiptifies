@@ -78,6 +78,12 @@ public class QR extends AppCompatActivity{
     }
     //end onRequestPermissionsResult.
 
+    //Method that handles button click.
+    public void qrScanner(View view) {
+
+    }
+    //end qrScanner.
+
 /*
 //This code will only work with API MIN Level 23 and greater.
 
