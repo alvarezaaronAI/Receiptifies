@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class QR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
 
+        Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
         Log.i(INFO_TAG, "isPermissionGranted : " + permissionGranted);
 
         //Checking Permissions for the App
