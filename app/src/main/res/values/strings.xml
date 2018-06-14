@@ -6,4 +6,6 @@
     <string name="camera_permission_denied">Camera Permission was denied.</string>
     <string name="camera_permission_approved">Camera Permission was approved.</string>
     <string name="action_Button_Test">Action Test</string>
+    <string name="qr_scanner">QR Scanner</string>
+    <string name="qr_scanner_extractor"> QR Text Extracted</string>
 </resources>
