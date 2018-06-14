@@ -14,10 +14,12 @@ import android.view.View;
 import android.widget.Toast;
 
 public class QR extends AppCompatActivity {
+    //Attributes to handle QR Scan.
     public final static int REQUEST_CAMERA = 1;
     public final String INFO_TAG = "STATE";
     public boolean permissionGranted;
 
+    //Create XML on Activity QR Start
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +34,10 @@ public class QR extends AppCompatActivity {
             Log.i(INFO_TAG, "isPermission :" + isPermission);
         }
     }
+    //end onCreate
 
-    //This code will work with the current API MIN 15 and greater.
+//This code will work with the current API MIN 15 and greater.
+
     //Checks and grants permission to use camera, if and only if is not yet accepted.
     public boolean checkPermissions() {
         //Checking for Camera Permission.
@@ -50,8 +54,6 @@ public class QR extends AppCompatActivity {
     //end checkPermissions.
 
     //Method that handles permission response.
-    //This method will run right after permissions check.
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA) {
             //Receive permission result camera permission.
@@ -68,14 +70,15 @@ public class QR extends AppCompatActivity {
                 Toast.makeText(this, "Camera permission was denied.", Toast.LENGTH_LONG).show();
             }
         } else {
+            //show permission result.
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
     //end onRequestPermissionsResult.
 
+/*
+//This code will only work with API MIN Level 23 and greater.
 
-    //This code will only work with API MIN Level 23 and greater.
-    /*
     //Grants permission to use camera, if and only if permission is not yet accepted.
     private void isCameraPermissionGranted() {
         //checks if permission was granted.
@@ -83,6 +86,8 @@ public class QR extends AppCompatActivity {
             Toast.makeText(this, "Camera Permission was approved.", Toast.LENGTH_LONG)
                     .show();
             //Permission was approved.
+            // TO DO Write code to show camera preview.
+            //Write Code here.
 
         } else {
             //Permission was denied.
@@ -98,6 +103,7 @@ public class QR extends AppCompatActivity {
 
     }
     //end isCameraPermissionGranted.
-    */
+*/
+
 
 }
