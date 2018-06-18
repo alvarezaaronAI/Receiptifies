@@ -57,7 +57,7 @@ public class QR extends AppCompatActivity {
         //If more than one permission you can add it in the if statements.
         //Checking for Write External Storage.
             //TODO Write code to check permissions for external storage.
-        
+
     }
     //end checkPermissions.
 
