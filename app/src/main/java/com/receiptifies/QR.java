@@ -54,15 +54,18 @@ public class QR extends AppCompatActivity {
         } else {
             return true;
         }
-        //If more than one permission you can add it in the if statements.
-        //Checking for Write External Storage.
+    //If more than one permission you can add it in the if statements.
+        //Checking for Write External Storage Permission.
             //TODO Write code to check permissions for external storage.
+        //Checking for GPS GEO Location Permission.
+            //TODO Write Code to check permissions for external Storage.
 
     }
     //end checkPermissions.
 
     //Method that handles permission response.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //TODO Write code to check permissions result overall.
         if (requestCode == REQUEST_CAMERA) {
             //Receive permission result camera permission.
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -86,7 +89,6 @@ public class QR extends AppCompatActivity {
 
     //Method that handles button click.
     public void qrScanner(View view) {
-
 //        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 //            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
