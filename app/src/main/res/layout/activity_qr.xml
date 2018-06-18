@@ -8,40 +8,43 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="387dp"
-
-        android:layout_height="424dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/qr_scanner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:text="@string/qr_scanner"
-            android:textColor="@android:color/holo_blue_light"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
             android:onClick="qrScanner"
-            />
+            android:padding="20dp"
+            android:text="@string/qr_scanner"
+            android:textColor="@android:color/holo_blue_light" />
 
+        <TextView
+            android:id="@+id/qr_textViewer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/qr_scanner_extractor"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/qr_textViewer"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/qr_scanner_extractor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-        android:textSize="25sp"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_red_light"
-        />
 
 </android.support.constraint.ConstraintLayout>

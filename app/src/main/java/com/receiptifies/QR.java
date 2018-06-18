@@ -3,6 +3,7 @@ package com.receiptifies;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -14,10 +15,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-public class QR extends AppCompatActivity{
+public class QR extends AppCompatActivity {
     //Attributes to handle QR Scan.
     public final static int REQUEST_CAMERA = 1;
+    //Log Cat String Tags
     public final String INFO_TAG = "STATE";
+    //
     public boolean permissionGranted;
 
     //Create XML on Activity QR Start
@@ -81,6 +84,10 @@ public class QR extends AppCompatActivity{
     //Method that handles button click.
     public void qrScanner(View view) {
 
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+//        }
     }
     //end qrScanner.
 
