@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -16,14 +17,15 @@ import android.view.View;
 import android.widget.Toast;
 
 public class QR extends AppCompatActivity {
-    //Attributes to handle QR Scan.
+    //Attributes to handle permissions.
     public final static int REQUEST_CAMERA = 1;
-    //Log Cat String Tags
+    //Log Cat String Tags.
     public final String INFO_TAG = "STATE";
-    //
+    public final String DEBUG = "ERROR";
+    //Any other Attributes that will handle QR Scan.
     public boolean permissionGranted;
 
-    //Create XML on Activity QR Start
+    //Create XML on Activity QR Start.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,36 +34,52 @@ public class QR extends AppCompatActivity {
         Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
         Log.i(INFO_TAG, "isPermissionGranted : " + permissionGranted);
 
-        //Checking Permissions for the App
+        //Checking Permissions for the App.
         boolean isPermission;
         if (!permissionGranted) {
             isPermission = checkPermissions();
             Log.i(INFO_TAG, "isPermission :" + isPermission);
         }
     }
-    //end onCreate
+    //end onCreate.
 
 //This code will work with the current API MIN 15 and greater.
 
     //Checks and grants permission to use camera, if and only if is not yet accepted.
     public boolean checkPermissions() {
-        //Checking for Camera Permission.
-        //Returning camera permission state.
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+        //Checking for Write External Storage Permission.
+        if (!isExternalStorageWritable()) {
+            Toast.makeText(this, "This app will only work with usable external storage.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        //Checking for all permissions manifest State.
+        int permissionCheckCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int permissionCheckWritable = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionCheckReadable = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        //TODO Write Code to check permissions for Geo Location.
+        // Permissions Check Int val will result 0 if all permissions was granted, other wise < 0 if 1 or many permissions were denied.
+        //TODO Edit a better way to check all permissions at once without needed to add.
+        int permissionsCheck = permissionCheckCamera + permissionCheckReadable + permissionCheckWritable;
+        //Allow the user to request permissions on the spot, if he wants.
+        if (permissionsCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CAMERA);
             return false;
         } else {
             return true;
         }
-    //If more than one permission you can add it in the if statements.
-        //Checking for Write External Storage Permission.
-            //TODO Write code to check permissions for external storage.
-        //Checking for GPS GEO Location Permission.
-            //TODO Write Code to check permissions for external Storage.
-
     }
     //end checkPermissions.
+
+    //Method that checks if External Device is Writable.
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
+    }
+    //end isExternalStorageWritable.
 
     //Method that handles permission response.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -69,7 +87,7 @@ public class QR extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA) {
             //Receive permission result camera permission.
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //Camera Permission has been granted, preview can be displayed.
+                //Camera Permissions has been granted, preview can be displayed.
 
                 //TODO Show Camera preview.
                 //Write Code here...
@@ -77,8 +95,8 @@ public class QR extends AppCompatActivity {
                 Toast.makeText(this, "Camera is now Open.", Toast.LENGTH_SHORT).show();
                 permissionGranted = true;
             } else {
-                //Else camera permission was denied.
-                Toast.makeText(this, "Camera permission was denied.", Toast.LENGTH_LONG).show();
+                //Else all other permissions was denied. permission was denied.
+                Toast.makeText(this, "Camera permissions was denied.", Toast.LENGTH_LONG).show();
             }
         } else {
             //show permission result.
