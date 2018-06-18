@@ -21,7 +21,6 @@ public class QR extends AppCompatActivity {
     public final static int REQUEST_CAMERA = 1;
     //Log Cat String Tags.
     public final String INFO_TAG = "STATE";
-    public final String DEBUG = "ERROR";
     //Any other Attributes that will handle QR Scan.
     public boolean permissionGranted;
 
@@ -33,7 +32,6 @@ public class QR extends AppCompatActivity {
 
         Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
         Log.i(INFO_TAG, "isPermissionGranted : " + permissionGranted);
-
         //Checking Permissions for the App.
         boolean isPermission;
         if (!permissionGranted) {
@@ -79,7 +77,7 @@ public class QR extends AppCompatActivity {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
-    //end isExternalStorageWritable.
+    //end isExternalStorageWritable
 
     //Method that handles permission response.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
