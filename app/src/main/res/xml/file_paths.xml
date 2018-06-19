@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <paths xmlns:android="http://schemas.android.com/apk/res/android">
-        <external-path name="my_images" path="Android/data/com.receiptifies/files/Pictures" />
+        <!-- This is a path that will be saved, Name can be  -->
+        <external-path name="qr_images" path="Android/data/com.receiptifies/files/Pictures" />
     </paths>
 </PreferenceScreen>

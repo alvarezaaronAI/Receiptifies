@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!-- This supports file system in which the external pictures will be saved. -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.receiptifies"

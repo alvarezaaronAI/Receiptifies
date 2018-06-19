@@ -131,12 +131,14 @@ public class QR extends AppCompatActivity {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.receiptifies",
                         photoFile);
+                Log.i(INFO_TAG, "PhotoURI: " + photoURI.getPath());
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_CAMERA);
             }
         }
     }
     //end qrScanner.
+
     //Method that writes a file and names it.
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -148,12 +150,11 @@ public class QR extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
-        Log.i(INFO_TAG, "Here -1");
         return image;
     }
+    //end createImageFile.
 
 /*
 //This code will only work with API MIN Level 23 and greater.
