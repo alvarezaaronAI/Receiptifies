@@ -3,6 +3,7 @@ package com.receiptifies;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,7 +18,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.BinaryBitmap;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class QR extends AppCompatActivity {
     //Any other Attributes that will handle QR Scan.
     public boolean permissionGranted;
     public String mCurrentPhotoPath;
+    public IntentIntegrator qrScan;
 
     //Create XML on Activity QR Start.
     @Override
@@ -113,6 +115,8 @@ public class QR extends AppCompatActivity {
     }
     //end onRequestPermissionsResult.
 
+    /*
+    // Modifying Camera QR Button
     //Method that handles button click.
     public void qrScanner(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -138,6 +142,13 @@ public class QR extends AppCompatActivity {
         }
     }
     //end qrScanner.
+    */
+    //Method that handles button click.
+    public void qrScanner(View view) {
+        Intent intent = new Intent(this,QRScan.class);
+        startActivity(intent);
+    }
+    //end qrScanner.
 
     //Method that writes a file and names it.
     private File createImageFile() throws IOException {
@@ -155,7 +166,7 @@ public class QR extends AppCompatActivity {
         return image;
     }
     //end createImageFile.
-    
+
 /*
 //This code will only work with API MIN Level 23 and greater.
 
