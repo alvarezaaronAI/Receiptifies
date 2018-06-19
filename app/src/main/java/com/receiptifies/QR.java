@@ -117,29 +117,23 @@ public class QR extends AppCompatActivity {
     public void qrScanner(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        Log.i(INFO_TAG, "Here 0");
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            Log.i(INFO_TAG, "Here 1");
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.d(ERROR_TAG, "qrScanner: ");
+                Log.i(ERROR_TAG, "Debug Here");
             }
             // Continue only if the File was successfully created
-            Log.i(INFO_TAG, "Here 2");
             if (photoFile != null) {
-                Log.i(INFO_TAG, " " + photoFile.getAbsolutePath());
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.receiptifies",
                         photoFile);
-                Log.i(INFO_TAG, "Here 4");
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_CAMERA);
             }
-            Log.i(INFO_TAG, "Here 3");
         }
     }
     //end qrScanner.
