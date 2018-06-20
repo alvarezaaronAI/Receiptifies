@@ -1,11 +1,13 @@
 package com.receiptifies;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -13,12 +15,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +44,7 @@ public class QR extends AppCompatActivity {
     public SurfaceView surfaceView;
     public CameraSource cameraSource;
     public TextView textView;
+    public BarcodeDetector barcodeDetector;
     //End of Attributes
 
     //Create XML on Activity QR Start.
@@ -48,8 +56,12 @@ public class QR extends AppCompatActivity {
         Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
         //Checking Permissions for the App.
         if (!permissionGranted) {
-           checkPermissions();
+            checkPermissions();
         }
+        //Setting up Camera
+        setCamera();
+        createCamera();
+        barcodeDetect();
     }
     //end onCreate.
 
@@ -92,7 +104,7 @@ public class QR extends AppCompatActivity {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
-    //end isExternalStorageWritable
+    //end isExternalStorageWritable.
 
     //Method that handles permission response.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -118,13 +130,31 @@ public class QR extends AppCompatActivity {
     }
     //end onRequestPermissionsResult.
 
-
-
     /*
     Methods that handle Qr Codes Pictures
     */
 
+
     //Method that handles button click.
+
+    //Method that writes a file and names it.
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+    //end createImageFile.
+
+    //Method that handles QrScanner Button
     public void qrScanner(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -148,54 +178,104 @@ public class QR extends AppCompatActivity {
             }
         }
     }
-    //end qrScanner.
+    //end qrScanner
 
-    //Method that writes a file and names it.
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    //Method that set up camera.
+    public void setCamera() {
+        surfaceView = (SurfaceView) findViewById(R.id.cameraPreview);
+        textView = (TextView) findViewById(R.id.qr_textViewer);
+        barcodeDetector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.QR_CODE).build();
+        cameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(640, 480).build();
     }
-    //end createImageFile.
-    
-/*
-    //This code will only work with API MIN Level 23 and greater.
-    //Method shows cameras after permissions were accepted.
+    //end setCamera.
 
-    //Grants permission to use camera, if and only if permission is not yet accepted.
-    private void isCameraPermissionGranted() {
-        //checks if permission was granted.
-        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Camera Permission was approved.", Toast.LENGTH_LONG)
-                    .show();
-            //Permission was approved.
-            // TO DO Write code to show camera preview.
-            //Write Code here.
-
-        } else {
-            //Permission was denied.
-             //Tell user what is the feature use for.
-            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                Toast.makeText(this, "Camera Permission is needed to scan QR Codes.", Toast.LENGTH_LONG)
-                        .show();
+    //Method that creates Camera.
+    public void createCamera() {
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                try {
+                    cameraSource.start(holder);
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
             }
 
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                cameraSource.stop();
+            }
+        });
+    }
+    //end createCamera.
+
+    //Method that detects Barcode
+    public void barcodeDetect(){
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
+            @Override
+            public void release() {
+
+            }
+            //After Scanning QR CODE and detects it, it will render info here.
+            @Override
+            public void receiveDetections(Detector.Detections<Barcode> detections) {
+                final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
+
+                if (qrCodes.size() != 0){
+                    textView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Vibrate the phone when found QR CODE
+                            Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                            vibrator.vibrate(1000);
+                            textView.setText(qrCodes.valueAt(0).displayValue);
+                        }
+                    });
+                }
+            }
+        });
+    }
+    //end barcodeDetect
+    /*
+        //This code will only work with API MIN Level 23 and greater.
+        //Method shows cameras after permissions were accepted.
+
+        //Grants permission to use camera, if and only if permission is not yet accepted.
+        private void isCameraPermissionGranted() {
+            //checks if permission was granted.
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera Permission was approved.", Toast.LENGTH_LONG)
+                        .show();
+                //Permission was approved.
+                // TO DO Write code to show camera preview.
+                //Write Code here.
+
+            } else {
+                //Permission was denied.
+                 //Tell user what is the feature use for.
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    Toast.makeText(this, "Camera Permission is needed to scan QR Codes.", Toast.LENGTH_LONG)
+                            .show();
+                }
+
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+
+            }
 
         }
-
-    }
-    //end isCameraPermissionGranted.
-*/
+        //end isCameraPermissionGranted.
+    */
 
 
 }
