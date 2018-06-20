@@ -52,12 +52,13 @@ public class QR extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
-
         Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
+        
         //Checking Permissions for the App.
         if (!permissionGranted) {
             checkPermissions();
         }
+
         //Setting up Camera
         setCamera();
         createCamera();
@@ -201,8 +202,7 @@ public class QR extends AppCompatActivity {
                 }
                 try {
                     cameraSource.start(holder);
-                }
-                catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -221,18 +221,19 @@ public class QR extends AppCompatActivity {
     //end createCamera.
 
     //Method that detects Barcode
-    public void barcodeDetect(){
+    public void barcodeDetect() {
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
 
             }
+
             //After Scanning QR CODE and detects it, it will render info here.
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
 
-                if (qrCodes.size() != 0){
+                if (qrCodes.size() != 0) {
                     textView.post(new Runnable() {
                         @Override
                         public void run() {
@@ -247,6 +248,7 @@ public class QR extends AppCompatActivity {
         });
     }
     //end barcodeDetect
+
     /*
         //This code will only work with API MIN Level 23 and greater.
         //Method shows cameras after permissions were accepted.
