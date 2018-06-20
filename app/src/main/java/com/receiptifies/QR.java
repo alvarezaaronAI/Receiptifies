@@ -13,11 +13,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.android.gms.vision.CameraSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,10 @@ public class QR extends AppCompatActivity {
     //Any other Attributes that will handle QR Scan.
     public boolean permissionGranted;
     public String mCurrentPhotoPath;
+    public SurfaceView surfaceView;
+    public CameraSource cameraSource;
+    public TextView textView;
+    //End of Attributes
 
     //Create XML on Activity QR Start.
     @Override
@@ -41,17 +46,17 @@ public class QR extends AppCompatActivity {
         setContentView(R.layout.activity_qr);
 
         Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
-        Log.i(INFO_TAG, "isPermissionGranted : " + permissionGranted);
         //Checking Permissions for the App.
-        boolean isPermission;
         if (!permissionGranted) {
-            isPermission = checkPermissions();
-            Log.i(INFO_TAG, "isPermission :" + isPermission);
+           checkPermissions();
         }
     }
     //end onCreate.
 
-//This code will work with the current API MIN 15 and greater.
+    /*
+    This code will work with the current API MIN 15 and greater.
+    Method will handle permissions to make sure that any permissions were granted.
+    */
 
     //Checks and grants permission to use camera, if and only if is not yet accepted.
     public boolean checkPermissions() {
@@ -113,6 +118,12 @@ public class QR extends AppCompatActivity {
     }
     //end onRequestPermissionsResult.
 
+
+
+    /*
+    Methods that handle Qr Codes Pictures
+    */
+
     //Method that handles button click.
     public void qrScanner(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -157,7 +168,8 @@ public class QR extends AppCompatActivity {
     //end createImageFile.
     
 /*
-//This code will only work with API MIN Level 23 and greater.
+    //This code will only work with API MIN Level 23 and greater.
+    //Method shows cameras after permissions were accepted.
 
     //Grants permission to use camera, if and only if permission is not yet accepted.
     private void isCameraPermissionGranted() {
