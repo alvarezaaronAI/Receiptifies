@@ -10,4 +10,6 @@
     <string name="qr_scanner_extractor"> QR Text Extracted</string>
     <string name="capture">Capture</string>
     <string name="title_activity_qrcamera">QRCamera</string>
+    <string name="receiptifies">Receiptifies</string>
+    <string name="qr_camera">QR Camera</string>
 </resources>
