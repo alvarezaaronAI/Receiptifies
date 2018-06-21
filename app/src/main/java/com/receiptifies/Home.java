@@ -27,6 +27,7 @@ public class Home extends AppCompatActivity {
         //creating action to go to QR Scanning
         Intent intent = new Intent(Home.this, QR.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     //end of cameraPreview.
 
@@ -37,7 +38,7 @@ public class Home extends AppCompatActivity {
         //creating action to go to QR Scanning
         Intent intent = new Intent(Home.this, Receipts.class);
         startActivity(intent);
-        overridePendingTransition(R.anim);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
     //end receiptsPreview.
 }

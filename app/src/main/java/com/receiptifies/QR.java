@@ -249,6 +249,14 @@ public class QR extends AppCompatActivity {
     }
     //end barcodeDetect
 
+    /*States Activity*/
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+    }
+
     /*
         //This code will only work with API MIN Level 23 and greater.
         //Method shows cameras after permissions were accepted.
