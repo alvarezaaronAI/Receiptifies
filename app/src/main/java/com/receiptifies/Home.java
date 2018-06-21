@@ -37,6 +37,7 @@ public class Home extends AppCompatActivity {
         //creating action to go to QR Scanning
         Intent intent = new Intent(Home.this, Receipts.class);
         startActivity(intent);
+        overridePendingTransition(R.anim);
     }
     //end receiptsPreview.
 }
