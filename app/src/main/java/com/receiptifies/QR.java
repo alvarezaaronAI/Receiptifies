@@ -33,6 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class QR extends AppCompatActivity {
+    /*
+    Attributes that will handle QR Class
+    */
     //Attributes to handle permissions.
     public final static int REQUEST_CAMERA = 1;
     //Log Cat String Tags.
@@ -45,15 +48,17 @@ public class QR extends AppCompatActivity {
     public CameraSource cameraSource;
     public TextView textView;
     public BarcodeDetector barcodeDetector;
-    //End of Attributes
 
-    //Create XML on Activity QR Start.
+    /*
+    On Create Method QR
+    */
+    //Override On Create.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
         Toast.makeText(this, "You are now in the QR Scanning.", Toast.LENGTH_SHORT).show();
-        
+
         //Checking Permissions for the App.
         if (!permissionGranted) {
             checkPermissions();
@@ -67,9 +72,12 @@ public class QR extends AppCompatActivity {
     //end onCreate.
 
     /*
-    This code will work with the current API MIN 15 and greater.
-    Method will handle permissions to make sure that any permissions were granted.
-    */
+    Methods that will handle QR Interface
+    ------------------------------------
+    Notes: This code will work with the current API MIN 15 and greater.
+    ------------------------------------
+    Methods that will handle permissions for QR Class.
+     */
 
     //Checks and grants permission to use camera, if and only if is not yet accepted.
     public boolean checkPermissions() {
@@ -132,11 +140,8 @@ public class QR extends AppCompatActivity {
     //end onRequestPermissionsResult.
 
     /*
-    Methods that handle Qr Codes Pictures
+    Methods that handle Qr Code Detection
     */
-
-
-    //Method that handles button click.
 
     //Method that writes a file and names it.
     private File createImageFile() throws IOException {
@@ -155,7 +160,7 @@ public class QR extends AppCompatActivity {
     }
     //end createImageFile.
 
-    //Method that handles QrScanner Button
+    //Method that handles QrScanner Button.
     public void qrScanner(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -179,7 +184,7 @@ public class QR extends AppCompatActivity {
             }
         }
     }
-    //end qrScanner
+    //end qrScanner.
 
     //Method that set up camera.
     public void setCamera() {
@@ -220,7 +225,7 @@ public class QR extends AppCompatActivity {
     }
     //end createCamera.
 
-    //Method that detects Barcode
+    //Method that detects Barcode.
     public void barcodeDetect() {
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
@@ -247,45 +252,18 @@ public class QR extends AppCompatActivity {
             }
         });
     }
-    //end barcodeDetect
+    //end barcodeDetect.
 
-    /*States Activity*/
-
+    /*
+    States Activity
+    */
+    //Override Finish
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+        //TODO Animation QR: Enable this to allow the slide in left/right animation.
+        //overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
-
-    /*
-        //This code will only work with API MIN Level 23 and greater.
-        //Method shows cameras after permissions were accepted.
-
-        //Grants permission to use camera, if and only if permission is not yet accepted.
-        private void isCameraPermissionGranted() {
-            //checks if permission was granted.
-            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera Permission was approved.", Toast.LENGTH_LONG)
-                        .show();
-                //Permission was approved.
-                // TO DO Write code to show camera preview.
-                //Write Code here.
-
-            } else {
-                //Permission was denied.
-                 //Tell user what is the feature use for.
-                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                    Toast.makeText(this, "Camera Permission is needed to scan QR Codes.", Toast.LENGTH_LONG)
-                            .show();
-                }
-
-                requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-
-            }
-
-        }
-        //end isCameraPermissionGranted.
-    */
-
+    //end finish.
 
 }

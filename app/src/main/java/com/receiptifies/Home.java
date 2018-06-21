@@ -9,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class Home extends AppCompatActivity {
-
-    //Create XML On Activity Home Start
+    /*
+    On Create Method
+     */
+    //Create XML On Activity Home Start.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,16 +20,20 @@ public class Home extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
-    //end onCreate
 
+    //end onCreate.
+    /*
+    Methods that will handle the Home Interface.
+     */
     //Method that handles camera in home activity.
     public void cameraPreview(View view) {
         Snackbar.make(view, "You are now in QR Scanning ", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+                .setAction("Action", null).show();
         //creating action to go to QR Scanning
         Intent intent = new Intent(Home.this, QR.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        //TODO Animation Home-QR: Enable this to allow the slide in left right animation.
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     //end of cameraPreview.
 
@@ -38,7 +44,18 @@ public class Home extends AppCompatActivity {
         //creating action to go to QR Scanning
         Intent intent = new Intent(Home.this, Receipts.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        //TODO Animation Home-Receipts: Enable this to allow the slide in left right animation.
+        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+
     //end receiptsPreview.
+    /*
+    State Activity
+     */
+    //Override Finish
+    @Override
+    public void finish() {
+        super.finish();
+    }
+    //end finish.
 }
