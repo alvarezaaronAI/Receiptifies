@@ -36,11 +36,11 @@ public class QR extends AppCompatActivity {
     /*
     Attributes that will handle QR Class
     */
-    //Attributes to handle permissions.
+    //Attributes to Request Code.
     public final static int REQUEST_CAMERA = 1;
     //Log Cat String Tags.
     public static final String INFO_TAG = "STATE";
-    private static final String ERROR_TAG = "ERROR";
+    public static final String ERROR_TAG = "ERROR";
     //Any other Attributes that will handle QR Scan.
     public boolean permissionGranted;
     public String mCurrentPhotoPath;
